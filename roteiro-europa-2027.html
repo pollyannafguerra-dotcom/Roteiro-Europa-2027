@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roteiro Europa 2027</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#1B2430;
+  --bg-deep:#141B24;
+  --panel:#212B39;
+  --line:#3A4656;
+  --line-soft:#2C3644;
+  --card:#EFE9DD;
+  --card-soft:#E7E0D0;
+  --ink:#211F1A;
+  --ink-soft:#5B5749;
+  --paper-text:#E9E4D8;
+  --paper-text-soft:#9BA6B5;
+  --amber:#D9A441;
+  --amber-deep:#B9812A;
+  --good:#5C8B6C;
+  --good-bg:#233329;
+  --warn:#C1553B;
+  --warn-bg:#33241F;
+  --radius:3px;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--paper-text);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+header{
+  padding:28px 20px 20px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--bg-deep),var(--bg));
+}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:.14em;
+  color:var(--amber);
+  margin-bottom:6px;
+}
+header h1{font-size:28px;color:var(--paper-text);line-height:1.15;}
+.subroute{margin-top:6px;color:var(--paper-text-soft);font-size:13.5px;}
+.start-date-row{
+  margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font-size:13px;color:var(--paper-text-soft);
+}
+.start-date-row input[type=date]{
+  background:var(--panel);border:1px solid var(--line);color:var(--paper-text);
+  padding:6px 8px;border-radius:var(--radius);font-family:'IBM Plex Mono',monospace;font-size:13px;
+}
+
+nav{
+  display:flex;gap:2px;
+  background:var(--bg-deep);
+  padding:0 20px;
+  border-bottom:1px solid var(--line);
+  overflow-x:auto;
+}
+nav button{
+  background:none;border:none;color:var(--paper-text-soft);
+  font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;
+  padding:14px 16px;cursor:pointer;border-bottom:2px solid transparent;
+  white-space:nowrap;
+}
+nav button.active{color:var(--amber);border-bottom-color:var(--amber);}
+
+main{max-width:760px;margin:0 auto;padding:22px 16px 80px;}
+section{display:none;}
+section.active{display:block;}
+
+/* pernoite summary */
+.hotel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px;}
+.hotel-card{
+  background:var(--card);color:var(--ink);border-radius:var(--radius);
+  padding:10px 12px;border-left:3px solid var(--amber-deep);
+}
+.hotel-card-top{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font-size:13.5px;font-weight:600;}
+.hotel-nights{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber-deep);font-weight:600;white-space:nowrap;}
+.hotel-dates{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
+.hotel-days{font-size:11px;color:var(--ink-soft);margin-top:1px;}
+
+.sleep-pill{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.03em;
+  background:var(--good-bg);color:#DEEBE1;padding:3px 7px;border-radius:2px;
+  white-space:nowrap;
+}
+.sleep-pill.noflight{background:var(--panel);color:var(--paper-text-soft);}
+
+.timeline{position:relative;padding-left:22px;}
+.timeline::before{
+  content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;
+  background:var(--line);
+}
+.day{position:relative;margin-bottom:16px;}
+.day::before{
+  content:'';position:absolute;left:-22px;top:22px;width:9px;height:9px;
+  border-radius:50%;background:var(--amber);border:2px solid var(--bg);
+}
+.ticket{
+  background:var(--card);color:var(--ink);
+  border-radius:0 var(--radius) var(--radius) 0;
+  border-left:4px solid var(--amber-deep);
+  overflow:hidden;
+}
+.ticket-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:14px 16px 0;gap:10px;flex-wrap:wrap;
+}
+.day-num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);}
+.head-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.day-date{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);}
+.edit-btn{
+  background:none;border:1px solid #C9C1AC;color:var(--ink-soft);
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;
+  padding:3px 8px;border-radius:2px;cursor:pointer;
+}
+.ticket-city{padding:2px 16px 10px;}
+.ticket-city h3{font-size:19px;}
+.ticket-title{color:var(--ink-soft);font-size:13.5px;margin-top:2px;}
+.ticket-body{padding:0 16px 14px;}
+.row-label{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;
+  color:var(--ink-soft);text-transform:uppercase;margin-top:10px;margin-bottom:3px;
+}
+.activities{font-size:14px;line-height:1.5;}
+.transport-line{
+  display:flex;align-items:flex-start;gap:8px;font-size:13.5px;line-height:1.5;
+  padding:8px 10px;border-radius:var(--radius);margin-top:4px;background:var(--card-soft);
+}
+.transport-line.corrected{background:var(--warn-bg);color:#F3E3DE;}
+.transport-line.ok{background:var(--good-bg);color:#DEEBE1;}
+.badge{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;
+  padding:2px 6px;border-radius:2px;flex-shrink:0;margin-top:1px;
+}
+.badge.corrected{background:var(--warn);color:#fff;}
+.badge.ok{background:var(--good);color:#fff;}
+.obs{font-size:13.5px;color:var(--ink-soft);margin-top:8px;font-style:italic;}
+.dashed{border-top:1px dashed #C9C1AC;margin-top:12px;padding-top:10px;}
+.options-toggle{
+  background:none;border:none;color:var(--amber-deep);font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;letter-spacing:.06em;padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;
+}
+.options-list{display:none;margin-top:8px;padding-left:16px;font-size:13.5px;line-height:1.6;color:var(--ink-soft);}
+.options-list.show{display:block;}
+.options-list li{margin-bottom:2px;}
+
+/* edit form */
+.edit-form{padding:0 16px 16px;}
+.edit-form label{
+  display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;
+  color:var(--ink-soft);text-transform:uppercase;margin-top:12px;margin-bottom:4px;
+}
+.edit-form input[type=text],.edit-form textarea{
+  width:100%;background:#fff;border:1px solid #C9C1AC;color:var(--ink);
+  padding:8px 9px;border-radius:2px;font-family:'Inter',sans-serif;font-size:13.5px;
+}
+.edit-form textarea{min-height:56px;resize:vertical;}
+.edit-form select{
+  background:#fff;border:1px solid #C9C1AC;color:var(--ink);padding:7px 9px;border-radius:2px;font-size:13px;
+}
+.edit-actions{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+.save-btn{background:var(--amber-deep);border:none;color:#fff;padding:9px 16px;border-radius:2px;cursor:pointer;font-size:13.5px;font-weight:600;}
+.cancel-btn{background:none;border:none;color:var(--ink-soft);padding:9px 4px;cursor:pointer;font-size:13px;}
+.remove-day-btn{background:none;border:none;color:var(--warn);font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;}
+
+.add-day-row{margin:20px 0 0 22px;}
+.add-day-btn{
+  background:var(--panel);border:1px dashed var(--line);color:var(--paper-text-soft);
+  width:100%;padding:14px;border-radius:var(--radius);cursor:pointer;font-size:13.5px;
+}
+
+.ledger-block{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+.ledger-title{font-size:11px;font-family:'IBM Plex Mono',monospace;letter-spacing:.1em;color:var(--paper-text-soft);margin-bottom:12px;}
+.total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
+.total-row .big{font-family:'IBM Plex Mono',monospace;font-size:26px;color:var(--amber);}
+.total-row .lbl{font-size:13px;color:var(--paper-text-soft);}
+.budget-input-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
+.budget-input-row input{
+  background:var(--bg-deep);border:1px solid var(--line);color:var(--paper-text);
+  padding:7px 9px;border-radius:var(--radius);font-family:'IBM Plex Mono',monospace;font-size:14px;width:130px;
+}
+.remaining{font-size:12.5px;color:var(--paper-text-soft);margin-top:6px;}
+.remaining.neg{color:var(--warn);}
+
+.cat-row{margin-bottom:12px;}
+.cat-row-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;}
+.cat-row-top .cname{color:var(--paper-text);}
+.cat-row-top .cvals{font-family:'IBM Plex Mono',monospace;color:var(--paper-text-soft);font-size:12.5px;}
+.bar-track{height:6px;background:var(--bg-deep);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;background:var(--amber);}
+.bar-fill.over{background:var(--warn);}
+.cat-target-input{
+  background:var(--bg-deep);border:1px solid var(--line);color:var(--paper-text-soft);
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;width:76px;padding:2px 5px;border-radius:2px;margin-left:6px;
+}
+
+.expense-form{display:flex;flex-direction:column;gap:8px;}
+.expense-form .frow{display:flex;gap:8px;}
+.expense-form input,.expense-form select{
+  background:var(--bg-deep);border:1px solid var(--line);color:var(--paper-text);
+  padding:8px 9px;border-radius:var(--radius);font-family:'Inter',sans-serif;font-size:13.5px;flex:1;min-width:0;
+}
+.expense-form button{
+  background:var(--amber);border:none;color:var(--bg-deep);font-weight:600;
+  padding:9px 14px;border-radius:var(--radius);cursor:pointer;font-size:13.5px;
+}
+.expense-list{margin-top:14px;border-top:1px solid var(--line);}
+.expense-item{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:13px;
+}
+.expense-item .exd{color:var(--paper-text);}
+.expense-item .exm{color:var(--paper-text-soft);font-size:11.5px;margin-top:1px;}
+.expense-item .exv{font-family:'IBM Plex Mono',monospace;color:var(--amber);white-space:nowrap;}
+.expense-item .exdel{background:none;border:none;color:var(--paper-text-soft);cursor:pointer;font-size:16px;padding:0 2px;}
+.empty-note{color:var(--paper-text-soft);font-size:13px;padding:10px 0;}
+
+.share-btn{
+  display:block;width:100%;background:var(--panel);border:1px solid var(--line);color:var(--paper-text);
+  padding:14px;border-radius:var(--radius);font-size:14px;text-align:left;cursor:pointer;margin-bottom:10px;
+}
+.share-btn .sblabel{font-weight:600;}
+.share-btn .subd{color:var(--paper-text-soft);font-size:12.5px;margin-top:3px;}
+.share-btn:active{background:var(--bg-deep);}
+.copied-flag{color:var(--good);font-size:12.5px;margin-top:-4px;margin-bottom:10px;display:none;}
+
+@media print{
+  nav,.share-btn,.options-toggle,.expense-form,.edit-btn,.add-day-row{display:none!important;}
+  body{background:#fff;color:#000;}
+  section{display:block!important;}
+  .ticket{border:1px solid #999;margin-bottom:10px;background:#fff;color:#000;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">EUROPA · ROTEIRO</div>
+  <h1>Amsterdã → Colônia</h1>
+  <div class="subroute" id="subroute">Holanda → Bélgica → França (Paris + Reims) → Luxemburgo → Suíça → Alemanha</div>
+  <div class="start-date-row">
+    <span>Data de chegada em Amsterdã:</span>
+    <input type="date" id="startDate">
+  </div>
+</header>
+
+<nav>
+  <button class="active" data-tab="roteiro">ROTEIRO</button>
+  <button data-tab="orcamento">ORÇAMENTO</button>
+  <button data-tab="compartilhar">COMPARTILHAR</button>
+</nav>
+
+<main>
+  <section id="tab-roteiro" class="active">
+    <div class="ledger-block" id="nightsSummaryBlock">
+      <div id="nightsSummary"></div>
+    </div>
+    <div class="timeline" id="timeline"></div>
+    <div class="add-day-row">
+      <button class="add-day-btn" onclick="addDay()">+ Adicionar dia ao final do roteiro</button>
+    </div>
+  </section>
+
+  <section id="tab-orcamento">
+    <div class="ledger-block">
+      <div class="ledger-title">ORÇAMENTO TOTAL (EUROPA)</div>
+      <div class="total-row">
+        <span class="big mono" id="totalSpentDisplay">R$ 0</span>
+        <span class="lbl">gasto</span>
+      </div>
+      <div class="budget-input-row">
+        <span style="font-size:13px;color:var(--paper-text-soft)">Meta total</span>
+        <input type="number" id="budgetTotal" value="25000">
+      </div>
+      <div class="remaining" id="remainingText"></div>
+    </div>
+
+    <div class="ledger-block">
+      <div class="ledger-title">CATEGORIAS</div>
+      <div id="categoriesBlock"></div>
+    </div>
+
+    <div class="ledger-block">
+      <div class="ledger-title">ADICIONAR GASTO</div>
+      <div class="expense-form">
+        <div class="frow">
+          <select id="exCategory"></select>
+          <select id="exDay"></select>
+        </div>
+        <input type="text" id="exDesc" placeholder="Descrição (ex: hotel Amsterdã, jantar dia 8...)">
+        <div class="frow">
+          <input type="number" id="exValue" placeholder="Valor (R$)">
+          <input type="date" id="exDate">
+        </div>
+        <button onclick="addExpense()">Adicionar gasto</button>
+      </div>
+      <div class="expense-list" id="expenseList"></div>
+    </div>
+  </section>
+
+  <section id="tab-compartilhar">
+    <button class="share-btn" onclick="copyItinerary()">
+      <div class="sblabel">Copiar resumo do roteiro</div>
+      <div class="subd">Texto com todos os dias, prontos para colar no WhatsApp ou e-mail</div>
+    </button>
+    <div class="copied-flag" id="flagItin">Copiado ✓</div>
+
+    <button class="share-btn" onclick="copyBudget()">
+      <div class="sblabel">Copiar resumo do orçamento</div>
+      <div class="subd">Total, categorias e últimos gastos registrados</div>
+    </button>
+    <div class="copied-flag" id="flagBudget">Copiado ✓</div>
+
+    <button class="share-btn" onclick="copyHotels()">
+      <div class="sblabel">Copiar lista de hotéis a reservar</div>
+      <div class="subd">Cidade, número de noites e datas — pronto para colar na busca</div>
+    </button>
+    <div class="copied-flag" id="flagHotels">Copiado ✓</div>
+
+    <button class="share-btn" onclick="window.print()">
+      <div class="sblabel">Imprimir / salvar como PDF</div>
+      <div class="subd">Versão em papel do roteiro completo</div>
+    </button>
+
+    <div class="ledger-block" style="margin-top:18px;">
+      <div class="ledger-title">SOBRE COMPARTILHAMENTO</div>
+      <div style="font-size:13.5px;color:var(--paper-text-soft);line-height:1.6;">
+        Esta ferramenta salva seus dados (roteiro, orçamento e gastos) de forma privada, associados só à sua conta.
+        Para que o Anderson veja e edite junto com você, me avise — posso configurar o armazenamento como compartilhado.
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const DEFAULT_DAYS = [
+{day:1,flag:'🇳🇱',city:'Amsterdã',title:'Chegada',time:'15h–20h',sleep:'Amsterdã',
+  activities:'Chegada; hotel; Damrak; Praça Dam; canais; jantar',
+  transport:'Aeroporto → hotel',status:'ok',correctionNote:'',
+  obs:'Dia leve.',
+  options:['Passeio curto pela Damrak ao anoitecer, sem compromisso fixo','Jantar em restaurante perto do hotel para evitar deslocamento longo no primeiro dia']},
+{day:2,flag:'🇳🇱',city:'Amsterdã',title:'Centro e canais',time:'9h30–18h30',sleep:'Amsterdã',
+  activities:'Praça Dam; Begijnhof; canais; A\'DAM LOOKOUT; ferry pelo IJ',
+  transport:'Centro a pé + ferry gratuito',status:'ok',correctionNote:'',
+  obs:'Mirante ótimo com a Sophia.',
+  options:['NEMO Science Museum (terraço com vista, bom para pausa)','Foodhallen (mercado gastronômico coberto, ótimo para almoço com criança)','Vondelpark para um intervalo tranquilo']},
+{day:3,flag:'🇳🇱',city:'Amsterdã',title:'Museus',time:'9h30–18h',sleep:'Amsterdã',
+  activities:'Rijksmuseum; Museumplein; Vondelpark; Leidseplein',
+  transport:'Tram/metro + caminhada',status:'ok',correctionNote:'',
+  obs:'Reservar museu com antecedência; levar carrinho.',
+  options:['Museu Van Gogh, também no Museumplein (reservar horário à parte)','De Pijp e mercado Albert Cuyp como alternativa mais local']},
+{day:4,flag:'🇳🇱',city:'Amsterdã',title:'Jordaan',time:'9h30–18h30',sleep:'Amsterdã',
+  activities:'Jordaan; Anne Frank House; Negen Straatjes; passeio de canais',
+  transport:'A pé/tram',status:'ok',correctionNote:'',
+  obs:'Verificar regras de carrinho no museu; reservar com antecedência.',
+  options:['Vista externa da Westerkerk em vez de entrar','Trocar o passeio de canal por um cruzeiro mais curto (45min) se a Sophia estiver cansada']},
+{day:5,flag:'🇧🇪',city:'Bruges',title:'Amsterdã → Bruges',time:'8h–19h',sleep:'Bruges',
+  activities:'Markt; Belfort; Burg; Basílica; Minnewater',
+  transport:'Trem ~3h–3h30 (normalmente 1 conexão, geralmente em Bruxelas)',status:'corrected',
+  correctionNote:'Ajustado: a estimativa original de "~3h" é a mais otimista. A maioria das conexões fica entre 3h16 e 3h30.',
+  obs:'Táxi com malas do hotel até a estação pode facilitar.',
+  options:['Passeio de charrete pela Markt','Choco-Story (museu do chocolate)','Passeio de barco pelos canais de Bruges']},
+{day:6,flag:'🇧🇪',city:'Bruges',title:'Bate-volta Ghent',time:'9h30–17h30',sleep:'Bruges',
+  activities:'Gravensteen; Graslei; Korenlei; Catedral de São Bavo',
+  transport:'Trem ~30min; centro a pé',status:'ok',correctionNote:'',
+  obs:'Voltar cedo.',
+  options:['Design Museum Gent','Vrijdagmarkt (praça histórica com cafés)']},
+{day:7,flag:'🇧🇪',city:'Bruxelas',title:'Bruges → Bruxelas',time:'9h–18h',sleep:'Bruxelas',
+  activities:'Grand Place; Galeries Royales; Manneken Pis; Mont des Arts',
+  transport:'Trem ~1h; centro a pé',status:'ok',correctionNote:'',
+  obs:'Não incluir o Atomium.',
+  options:['Museu da História em Quadrinhos (Comic Strip Museum)','Parc du Cinquantenaire para um intervalo ao ar livre']},
+{day:8,flag:'🇫🇷',city:'Paris',title:'Bruxelas → Paris · Torre Eiffel',time:'9h–20h',sleep:'Paris',
+  activities:'Trocadéro; Torre Eiffel; Champs de Mars; cruzeiro no Sena; Champs-Élysées; Arco do Triunfo',
+  transport:'Eurostar/Thalys ~1h22; metrô/táxi + barco',status:'ok',correctionNote:'',
+  obs:'Dia de chegada em Paris — reservar ingresso da Torre com antecedência; o barco é uma opção confortável. Dia cheio: dá pra deixar o Arco do Triunfo como passeio da noite, a pé pela Champs-Élysées.',
+  options:['Musée du quai Branly, próximo à Torre Eiffel','Piquenique no Champ de Mars em vez do cruzeiro, se o dia estiver corrido']},
+{day:9,flag:'🇫🇷',city:'Paris',title:'Louvre e Île de la Cité',time:'9h–20h',sleep:'Paris',
+  activities:'Louvre; Tuileries; Concorde; Notre-Dame; Sainte-Chapelle; Île de la Cité; Quartier Latin',
+  transport:'Metrô/táxi',status:'ok',correctionNote:'',
+  obs:'Reservar 2,5–3h para o Louvre; o resto segue a pé ao longo do Sena até a Île de la Cité. Dia denso — se render, deixe o Quartier Latin como opcional.',
+  options:['Musée de l\'Orangerie (menor, mais tranquilo com criança pequena)','Sorvete Berthillon na Île Saint-Louis','Livraria Shakespeare and Company']},
+{day:10,flag:'🇫🇷',city:'Versalhes',title:'Bate-volta Versalhes',time:'9h–18h',sleep:'Paris',
+  activities:'Palácio de Versalhes; Galeria dos Espelhos; Jardins; Grand Trianon',
+  transport:'RER C ~45min a partir de Paris; entrada + caminhada nos jardins',status:'ok',correctionNote:'',
+  obs:'Reservar ingressos combinados (palácio + Trianon) com antecedência; os jardins são bem tranquilos com carrinho.',
+  options:['Petit Trianon e Hameau de la Reine, se sobrar tempo','Grandes Eaux Musicales (show das fontes), se coincidir com o dia da semana','Aluguel de barquinho no Grand Canal para variar o passeio']},
+{day:11,flag:'🇫🇷',city:'Paris',title:'Montmartre',time:'9h–19h',sleep:'Paris',
+  activities:'Montmartre; Sacré-Cœur; Place du Tertre; Galeries Lafayette; Opéra',
+  transport:'Metrô + caminhada/táxi',status:'ok',correctionNote:'',
+  obs:'Evitar trechos com muitas escadas.',
+  options:['Museu de Montmartre','Funicular de Montmartre para poupar a subida com o carrinho']},
+{day:12,flag:'🇫🇷',city:'Reims',title:'Paris → Reims · Champagne',time:'9h–19h',sleep:'Reims',
+  activities:'Chegada; Catedral Notre-Dame de Reims (coroação dos reis franceses); Porte de Mars; centro histórico; visita a uma maison de champagne (Pommery ou Taittinger — adegas históricas, UNESCO)',
+  transport:'TGV direto ~46min (um dos trechos mais curtos e baratos do roteiro)',status:'ok',correctionNote:'',
+  obs:'Sophia pode acompanhar a visita às adegas — só a degustação é restrita a maiores de 18 anos na França.',
+  options:['Palais du Tau, museu ao lado da catedral','Basílica de Saint-Remi']},
+{day:13,flag:'🇫🇷',city:'Reims',title:'Bate-volta Épernay e Hautvillers',time:'9h–18h',sleep:'Reims',
+  activities:'Épernay (Avenue de Champagne); vilarejo de Hautvillers, onde viveu Dom Pérignon, com vista para os vinhedos',
+  transport:'Trem Reims → Épernay ~30min; Hautvillers por táxi/ônibus local a partir de Épernay',status:'ok',correctionNote:'',
+  obs:'Ritmo tranquilo — dia mais leve que o anterior.',
+  options:['Visita a uma maison em Épernay, como Moët & Chandon','Route Touristique du Champagne, se alugarem carro por um dia']},
+{day:14,flag:'🇱🇺',city:'Luxemburgo',title:'Reims → Luxemburgo',time:'8h–19h',sleep:'Luxemburgo',
+  activities:'Palácio Grão-Ducal; Notre-Dame; Gëlle Fra; Corniche; Grund',
+  transport:'Trem ~2h30, geralmente direto',status:'ok',correctionNote:'',
+  obs:'Cidade compacta, fácil de fazer a pé.',
+  options:['Casemates du Bock','Caminhada pela Chemin de la Corniche','Place Guillaume II, se houver mercado no dia']},
+{day:15,flag:'🇨🇭',city:'Basileia',title:'Luxemburgo → Basileia',time:'8h–19h',sleep:'Basileia',
+  activities:'Marktplatz; Rathaus; Münster; passeio pelo Reno',
+  transport:'Trem ~4h30–5h45; geralmente 2 conexões (não há trem direto)',status:'corrected',
+  correctionNote:'Correção importante: não existe trem direto. A conexão mais rápida (via Thionville) leva cerca de 3h25, mas a maioria das opções fica entre 4h56 e 5h45 com 2 baldeações. Considere este um dia quase todo de deslocamento — evite marcar passeios à tarde.',
+  obs:'Dia de deslocamento.',
+  options:['Zoo de Basel, opção leve se sobrar tempo no fim da tarde','Fonte Tinguely','Travessia de balsa a remo (Fähre) pelo Reno']},
+{day:16,flag:'🇨🇭',city:'Lucerna',title:'Basileia → Lucerna',time:'9h–18h30',sleep:'Lucerna',
+  activities:'Kapellbrücke; centro histórico; lago',
+  transport:'Trem ~1h; centro a pé',status:'ok',correctionNote:'',
+  obs:'Hotel perto da estação ajuda.',
+  options:['Monumento do Leão de Lucerna','Muralha Musegg (torres históricas)']},
+{day:17,flag:'🇨🇭',city:'Lucerna',title:'Montanha',time:'8h–19h',sleep:'Lucerna',
+  activities:'Monte Pilatus ou Rigi; lago; centro',
+  transport:'Trem/teleférico conforme a montanha escolhida',status:'ok',correctionNote:'',
+  obs:'Escolher conforme o clima; verificar se o carrinho é permitido no transporte de montanha.',
+  options:['Museu Suíço dos Transportes, como alternativa em dia de chuva','Titlis como terceira opção de montanha']},
+{day:18,flag:'🇩🇪',city:'Frankfurt',title:'Lucerna → Frankfurt',time:'8h–19h30',sleep:'Frankfurt',
+  activities:'Römerberg; Neue Altstadt; Catedral; Eiserner Steg',
+  transport:'Trem ~4h; táxi se necessário',status:'ok',correctionNote:'',
+  obs:'Programação flexível.',
+  options:['Städel Museum, se houver disposição após a viagem','Palmengarten para um fim de tarde mais calmo']},
+{day:19,flag:'🇩🇪',city:'Frankfurt',title:'Centro histórico',time:'9h–19h',sleep:'Frankfurt',
+  activities:'Römerberg; Catedral; Neue Altstadt; margem do Main; Sachsenhausen; Main Tower',
+  transport:'Centro a pé + transporte/táxi',status:'ok',correctionNote:'',
+  obs:'Main Tower funciona melhor no fim da tarde.',
+  options:['Casa de Goethe','Kleinmarkthalle (mercado coberto) para almoço']},
+{day:20,flag:'🇩🇪',city:'Heidelberg',title:'Bate-volta',time:'8h–19h',sleep:'Frankfurt',
+  activities:'Castelo; Altstadt; Alte Brücke; Philosophenweg',
+  transport:'Trem ~1h; funicular + caminhada',status:'ok',correctionNote:'',
+  obs:'Evitar o Philosophenweg em caso de chuva ou neve.',
+  options:['Pátio interno da Universidade de Heidelberg','Vista da Karl-Theodor-Brücke (Ponte Velha) sem subir ao Philosophenweg']},
+{day:21,flag:'🇩🇪',city:'Colônia',title:'Bate-volta',time:'8h–19h',sleep:'Frankfurt',
+  activities:'Catedral; Altstadt; Hohenzollernbrücke; margem do Reno',
+  transport:'Trem ~1h–1h30; centro a pé',status:'ok',correctionNote:'',
+  obs:'Dia tranquilo, sem atrações marcadas em excesso.',
+  options:['Museu do Chocolate de Colônia','Museu Ludwig, ao lado da Catedral']},
+{day:22,flag:'✈️',city:'Frankfurt → Brasil',title:'Volta',time:'Conforme voo',sleep:'',
+  activities:'Café; check-out; aeroporto',
+  transport:'Hotel → aeroporto',status:'ok',correctionNote:'',
+  obs:'Sem atrações marcadas — confirme se o horário do voo dá folga após o check-out.',
+  options:[]},
+];
+
+const CATEGORIES = ['Transporte','Hospedagem','Alimentação','Passeios/Ingressos','Outros'];
+const DEFAULT_TARGETS = {'Transporte':7000,'Hospedagem':9000,'Alimentação':5000,'Passeios/Ingressos':3000,'Outros':1000};
+
+let days = [];
+let config = {startDate:'', budgetTotal:25000, targets:{...DEFAULT_TARGETS}};
+let expenses = [];
+let editingDay = null;
+
+function fmtBRL(v){
+  return 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+}
+
+function dateForDay(n){
+  if(!config.startDate) return '';
+  const d = new Date(config.startDate+'T00:00:00');
+  d.setDate(d.getDate()+(n-1));
+  return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+}
+
+function computeNightsSummary(){
+  const groups = [];
+  let current = null;
+  days.forEach(d=>{
+    if(!d.sleep){ current = null; return; }
+    if(current && current.city===d.sleep){
+      current.nights += 1;
+      current.endDay = d.day;
+    } else {
+      current = {city:d.sleep, flag:d.flag, nights:1, startDay:d.day, endDay:d.day};
+      groups.push(current);
+    }
+  });
+  return groups;
+}
+
+function renderNightsSummary(){
+  const el = document.getElementById('nightsSummary');
+  if(!el) return;
+  const groups = computeNightsSummary();
+  if(groups.length===0){
+    el.innerHTML = `<div class="ledger-title" style="margin-bottom:0;">🛏 ONDE VAMOS DORMIR</div><div class="empty-note">Adicione dias com pernoite para ver o resumo de hotéis aqui.</div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="ledger-title">🛏 ONDE VAMOS DORMIR — ${groups.length} hotéis / ${groups.reduce((s,g)=>s+g.nights,0)} noites</div>
+    <div class="hotel-grid">
+    ${groups.map(g=>{
+      let dateRange = '';
+      if(config.startDate){
+        const checkIn = dateForDay(g.startDay);
+        const outD = new Date(config.startDate+'T00:00:00');
+        outD.setDate(outD.getDate()+g.endDay);
+        const checkOut = outD.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+        dateRange = `${checkIn} → ${checkOut}`;
+      }
+      const dayRange = g.startDay===g.endDay ? `dia ${g.startDay}` : `dias ${g.startDay}–${g.endDay}`;
+      return `<div class="hotel-card">
+        <div class="hotel-card-top"><span>${g.flag} ${g.city}</span><span class="hotel-nights">${g.nights} noite${g.nights>1?'s':''}</span></div>
+        ${dateRange ? `<div class="hotel-dates">${dateRange}</div>` : `<div class="hotel-days">${dayRange}</div>`}
+      </div>`;
+    }).join('')}
+    </div>
+  `;
+}
+
+function renderTimeline(){
+  const el = document.getElementById('timeline');
+  el.innerHTML = days.map((d,idx)=>{
+    if(editingDay===d.day){
+      return renderEditForm(d,idx);
+    }
+    const dateStr = dateForDay(d.day);
+    const transportClass = d.status==='corrected' ? 'corrected' : 'ok';
+    const badgeText = d.status==='corrected' ? 'ATENÇÃO' : 'CONFERE';
+    const correctionHtml = d.correctionNote ? `<div class="obs" style="color:var(--warn);font-style:normal;">${d.correctionNote}</div>` : '';
+    const sleepPillHtml = d.sleep
+      ? `<span class="sleep-pill">🛏 ${d.sleep}</span>`
+      : `<span class="sleep-pill noflight">✈️ sem pernoite</span>`;
+    const optionsHtml = d.options && d.options.length ? `
+      <div class="dashed">
+        <button class="options-toggle" onclick="toggleOptions(${d.day})">
+          <span id="opticon-${d.day}">+</span> outras opções de passeio
+        </button>
+        <ul class="options-list" id="options-${d.day}">
+          ${d.options.map(o=>`<li>${o}</li>`).join('')}
+        </ul>
+      </div>` : '';
+    return `
+    <div class="day">
+      <div class="ticket">
+        <div class="ticket-head">
+          <span class="day-num">DIA ${String(d.day).padStart(2,'0')}</span>
+          <div class="head-right">
+            <span class="day-date">${dateStr}</span>
+            ${sleepPillHtml}
+            <button class="edit-btn" onclick="startEdit(${d.day})">editar</button>
+          </div>
+        </div>
+        <div class="ticket-city">
+          <h3>${d.flag} ${d.city}</h3>
+          <div class="ticket-title">${d.title} · ${d.time}</div>
+        </div>
+        <div class="ticket-body">
+          <div class="row-label">Programação</div>
+          <div class="activities">${d.activities}</div>
+          <div class="row-label">Deslocamento</div>
+          <div class="transport-line ${transportClass}">
+            <span class="badge ${transportClass}">${badgeText}</span>
+            <span>${d.transport}</span>
+          </div>
+          ${correctionHtml}
+          ${d.obs ? `<div class="obs">${d.obs}</div>` : ''}
+          ${optionsHtml}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  renderNightsSummary();
+}
+
+function renderEditForm(d,idx){
+  const optionsText = (d.options||[]).join('\n');
+  return `
+  <div class="day">
+    <div class="ticket">
+      <div class="ticket-head">
+        <span class="day-num">DIA ${String(d.day).padStart(2,'0')} · EDITANDO</span>
+        <div class="head-right"><span class="day-date">${dateForDay(d.day)}</span></div>
+      </div>
+      <div class="edit-form">
+        <label>Cidade / destino (com bandeira, ex: 🇫🇷 Paris)</label>
+        <input type="text" id="ef-flagcity-${d.day}" value="${d.flag} ${d.city}">
+        <label>Título do dia</label>
+        <input type="text" id="ef-title-${d.day}" value="${d.title}">
+        <label>Horário</label>
+        <input type="text" id="ef-time-${d.day}" value="${d.time}">
+        <label>Onde dorme essa noite (cidade do hotel — deixe em branco se for o dia do voo, sem pernoite)</label>
+        <input type="text" id="ef-sleep-${d.day}" value="${d.sleep||''}">
+        <label>Programação</label>
+        <textarea id="ef-activities-${d.day}">${d.activities}</textarea>
+        <label>Deslocamento</label>
+        <input type="text" id="ef-transport-${d.day}" value="${d.transport}">
+        <label>Status do deslocamento</label>
+        <select id="ef-status-${d.day}">
+          <option value="ok" ${d.status==='ok'?'selected':''}>Confere</option>
+          <option value="corrected" ${d.status==='corrected'?'selected':''}>Atenção / corrigido</option>
+        </select>
+        <label>Nota de atenção (opcional)</label>
+        <textarea id="ef-correctionNote-${d.day}">${d.correctionNote||''}</textarea>
+        <label>Observações</label>
+        <textarea id="ef-obs-${d.day}">${d.obs||''}</textarea>
+        <label>Outras opções de passeio (uma por linha)</label>
+        <textarea id="ef-options-${d.day}">${optionsText}</textarea>
+        <div class="edit-actions">
+          <div>
+            <button class="save-btn" onclick="saveEdit(${d.day})">Salvar</button>
+            <button class="cancel-btn" onclick="cancelEdit()">Cancelar</button>
+          </div>
+          <button class="remove-day-btn" onclick="removeDay(${d.day})">Remover este dia</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function startEdit(day){ editingDay = day; renderTimeline(); }
+function cancelEdit(){ editingDay = null; renderTimeline(); }
+
+async function saveEdit(day){
+  const idx = days.findIndex(x=>x.day===day);
+  if(idx<0) return;
+  const flagcity = document.getElementById('ef-flagcity-'+day).value.trim();
+  const firstSpace = flagcity.indexOf(' ');
+  const flag = firstSpace>0 ? flagcity.slice(0,firstSpace) : '';
+  const city = firstSpace>0 ? flagcity.slice(firstSpace+1) : flagcity;
+  days[idx] = {
+    ...days[idx],
+    flag, city,
+    title: document.getElementById('ef-title-'+day).value.trim(),
+    time: document.getElementById('ef-time-'+day).value.trim(),
+    sleep: document.getElementById('ef-sleep-'+day).value.trim(),
+    activities: document.getElementById('ef-activities-'+day).value.trim(),
+    transport: document.getElementById('ef-transport-'+day).value.trim(),
+    status: document.getElementById('ef-status-'+day).value,
+    correctionNote: document.getElementById('ef-correctionNote-'+day).value.trim(),
+    obs: document.getElementById('ef-obs-'+day).value.trim(),
+    options: document.getElementById('ef-options-'+day).value.split('\n').map(s=>s.trim()).filter(Boolean),
+  };
+  editingDay = null;
+  await saveDays();
+  renderTimeline();
+  populateExpenseSelects();
+}
+
+async function removeDay(day){
+  days = days.filter(x=>x.day!==day);
+  days.forEach((d,i)=>{ d.day = i+1; });
+  editingDay = null;
+  await saveDays();
+  renderTimeline();
+  populateExpenseSelects();
+}
+
+async function addDay(){
+  const nextNum = days.length+1;
+  const newDay = {day:nextNum,flag:'📍',city:'Novo destino',title:'Novo dia',time:'',sleep:'',
+    activities:'',transport:'',status:'ok',correctionNote:'',obs:'',options:[]};
+  days.push(newDay);
+  editingDay = nextNum;
+  await saveDays();
+  renderTimeline();
+  populateExpenseSelects();
+  const el = document.getElementById('ef-flagcity-'+nextNum);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function toggleOptions(day){
+  const list = document.getElementById('options-'+day);
+  const icon = document.getElementById('opticon-'+day);
+  list.classList.toggle('show');
+  icon.textContent = list.classList.contains('show') ? '–' : '+';
+}
+
+function spentByCategory(cat){
+  return expenses.filter(e=>e.category===cat).reduce((s,e)=>s+Number(e.value),0);
+}
+function totalSpent(){
+  return expenses.reduce((s,e)=>s+Number(e.value),0);
+}
+
+function renderBudget(){
+  document.getElementById('budgetTotal').value = config.budgetTotal;
+  const spent = totalSpent();
+  document.getElementById('totalSpentDisplay').textContent = fmtBRL(spent);
+  const remaining = config.budgetTotal - spent;
+  const remEl = document.getElementById('remainingText');
+  remEl.textContent = (remaining>=0 ? 'Restam ' : 'Ultrapassou em ') + fmtBRL(Math.abs(remaining)) + ' da meta de ' + fmtBRL(config.budgetTotal);
+  remEl.className = 'remaining' + (remaining<0?' neg':'');
+
+  const catBlock = document.getElementById('categoriesBlock');
+  catBlock.innerHTML = CATEGORIES.map(cat=>{
+    const target = config.targets[cat]||0;
+    const s = spentByCategory(cat);
+    const pct = target>0 ? Math.min(100,(s/target)*100) : 0;
+    const over = s>target;
+    return `
+    <div class="cat-row">
+      <div class="cat-row-top">
+        <span class="cname">${cat}</span>
+        <span class="cvals">${fmtBRL(s)} / <input type="number" class="cat-target-input" data-cat="${cat}" value="${target}" onchange="updateTarget('${cat}',this.value)"></span>
+      </div>
+      <div class="bar-track"><div class="bar-fill ${over?'over':''}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  const list = document.getElementById('expenseList');
+  if(expenses.length===0){
+    list.innerHTML = '<div class="empty-note">Nenhum gasto registrado ainda.</div>';
+  } else {
+    const sorted = [...expenses].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+    list.innerHTML = sorted.map(e=>{
+      const dayLabel = e.day ? ('Dia '+e.day+' · ') : '';
+      return `
+      <div class="expense-item">
+        <div>
+          <div class="exd">${e.desc||e.category}</div>
+          <div class="exm">${dayLabel}${e.category}${e.date?' · '+new Date(e.date+'T00:00:00').toLocaleDateString('pt-BR'):''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="exv">${fmtBRL(e.value)}</span>
+          <button class="exdel" onclick="deleteExpense('${e.id}')">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function updateTarget(cat,val){
+  config.targets[cat] = Number(val)||0;
+  saveConfig();
+  renderBudget();
+}
+
+function populateExpenseSelects(){
+  const catSel = document.getElementById('exCategory');
+  catSel.innerHTML = CATEGORIES.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const daySel = document.getElementById('exDay');
+  daySel.innerHTML = '<option value="">Sem dia específico</option>' + days.map(d=>`<option value="${d.day}">Dia ${d.day} — ${d.city}</option>`).join('');
+}
+
+async function addExpense(){
+  const category = document.getElementById('exCategory').value;
+  const day = document.getElementById('exDay').value;
+  const desc = document.getElementById('exDesc').value.trim();
+  const value = document.getElementById('exValue').value;
+  const date = document.getElementById('exDate').value;
+  if(!value || Number(value)<=0){ return; }
+  const entry = {id:'ex_'+Date.now(), category, day, desc, value:Number(value), date};
+  expenses.push(entry);
+  document.getElementById('exDesc').value='';
+  document.getElementById('exValue').value='';
+  await saveExpenses();
+  renderBudget();
+}
+
+async function deleteExpense(id){
+  expenses = expenses.filter(e=>e.id!==id);
+  await saveExpenses();
+  renderBudget();
+}
+
+async function saveConfig(){
+  try{ await window.storage.set('trip-config', JSON.stringify(config), false); }catch(e){console.error(e);}
+}
+async function saveExpenses(){
+  try{ await window.storage.set('trip-expenses', JSON.stringify(expenses), false); }catch(e){console.error(e);}
+}
+async function saveDays(){
+  try{ await window.storage.set('trip-days', JSON.stringify(days), false); }catch(e){console.error(e);}
+}
+async function loadData(){
+  try{
+    const c = await window.storage.get('trip-config', false);
+    if(c && c.value) config = {...config, ...JSON.parse(c.value)};
+  }catch(e){}
+  try{
+    const ex = await window.storage.get('trip-expenses', false);
+    if(ex && ex.value) expenses = JSON.parse(ex.value);
+  }catch(e){}
+  try{
+    const dd = await window.storage.get('trip-days', false);
+    days = (dd && dd.value) ? JSON.parse(dd.value) : JSON.parse(JSON.stringify(DEFAULT_DAYS));
+  }catch(e){
+    days = JSON.parse(JSON.stringify(DEFAULT_DAYS));
+  }
+  document.getElementById('startDate').value = config.startDate||'';
+  populateExpenseSelects();
+  renderTimeline();
+  renderBudget();
+}
+
+document.getElementById('startDate').addEventListener('change', async (e)=>{
+  config.startDate = e.target.value;
+  await saveConfig();
+  renderTimeline();
+});
+document.getElementById('budgetTotal').addEventListener('change', async (e)=>{
+  config.budgetTotal = Number(e.target.value)||0;
+  await saveConfig();
+  renderBudget();
+});
+
+document.querySelectorAll('nav button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('main section').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+function copyItinerary(){
+  const text = days.map(d=>`Dia ${d.day} — ${d.flag} ${d.city} (${d.time})\n${d.activities}\nDeslocamento: ${d.transport}${d.obs?'\nObs: '+d.obs:''}`).join('\n\n');
+  navigator.clipboard.writeText('ROTEIRO EUROPA\n\n'+text).then(()=>flashCopied('flagItin'));
+}
+function copyBudget(){
+  let text = `ORÇAMENTO EUROPA\nMeta total: ${fmtBRL(config.budgetTotal)}\nGasto até agora: ${fmtBRL(totalSpent())}\n\nPor categoria:\n`;
+  CATEGORIES.forEach(c=>{ text += `- ${c}: ${fmtBRL(spentByCategory(c))} / ${fmtBRL(config.targets[c]||0)}\n`; });
+  if(expenses.length){
+    text += '\nÚltimos gastos:\n';
+    [...expenses].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,10).forEach(e=>{
+      text += `- ${e.desc||e.category} (${e.category}): ${fmtBRL(e.value)}\n`;
+    });
+  }
+  navigator.clipboard.writeText(text).then(()=>flashCopied('flagBudget'));
+}
+function copyHotels(){
+  const groups = computeNightsSummary();
+  let text = 'HOTÉIS A RESERVAR\n\n';
+  groups.forEach(g=>{
+    let dateRange = '';
+    if(config.startDate){
+      const checkIn = dateForDay(g.startDay);
+      const outD = new Date(config.startDate+'T00:00:00');
+      outD.setDate(outD.getDate()+g.endDay);
+      const checkOut = outD.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+      dateRange = ` (${checkIn} a ${checkOut})`;
+    }
+    text += `- ${g.flag} ${g.city}: ${g.nights} noite${g.nights>1?'s':''}${dateRange}\n`;
+  });
+  navigator.clipboard.writeText(text).then(()=>flashCopied('flagHotels'));
+}
+function flashCopied(id){
+  const el = document.getElementById(id);
+  el.style.display='block';
+  setTimeout(()=>{el.style.display='none';},2000);
+}
+
+loadData();
+</script>
+</body>
+</html>
